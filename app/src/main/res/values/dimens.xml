@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="padding">16dp</dimen>
+    <dimen name="img_height_wdth">56dp</dimen>
+    <dimen name="title_txt_size">16sp</dimen>
+    <dimen name="author_txt_size">12sp</dimen>
+    <dimen name="section_txt_size">8sp</dimen>
+</resources>
