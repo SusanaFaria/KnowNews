@@ -3,13 +3,11 @@ package com.example.android.knownews;
 import android.content.SharedPreferences;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.view.View;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -30,21 +28,12 @@ public class SettingsActivity extends AppCompatActivity {
                 PreferenceManager.setDefaultValues(getContext(), R.xml.settings_main, false);
             }
 
-            final CheckBoxPreference section = (CheckBoxPreference)findPreference(getString(R.string.settings_choose_stage_value));
-            final CheckBoxPreference sport = (CheckBoxPreference) findPreference(getString(R.string.settings_choose_sport_value));
-            final CheckBoxPreference art = (CheckBoxPreference) findPreference(getString(R.string.settings_choose_art_value));
-
 
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
 
-            section.getOnPreferenceChangeListener();
-            section.setSummary(R.string.settings_choose_stage_label);
-            sport.getOnPreferenceChangeListener();
-            sport.setSummary(R.string.settings_choose_sport_label);
-            art.getOnPreferenceChangeListener();
-            art.setSummary(R.string.settings_choose_art_label);
-
+            Preference minNumber = findPreference(getString(R.string.settings_min_number_key));
+            bindPreferenceSummaryToValue(minNumber);
 
 
         }

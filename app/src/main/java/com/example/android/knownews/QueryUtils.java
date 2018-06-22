@@ -123,6 +123,7 @@ public class QueryUtils {
             // Extract the JSONObject associated with the key called "response"
             JSONObject newsObject = baseJsonResponse.getJSONObject("response");
             String orderBy = newsObject.getString("orderBy");
+            String pageSize = newsObject.getString("pageSize");
 
 
 
@@ -162,7 +163,7 @@ public class QueryUtils {
 
 
                     // Create a new {@link GreenNews} object with the thumbnail, title, date, url and section from the JSON response.
-                    News singleNew = new News(thumbnailImg, webTitle, author, webDate, webUrl, section, orderBy);
+                    News singleNew = new News(thumbnailImg, webTitle, author, webDate, webUrl, section, orderBy, pageSize);
 
                     // Add the new {@link GreenNews} to the list of greenNews.
                     news.add(singleNew);

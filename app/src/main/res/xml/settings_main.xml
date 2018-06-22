@@ -8,35 +8,12 @@
         android:key="@string/settings_order_by_key"
         android:title="@string/settings_order_by_label" />
 
-    <PreferenceCategory
-        android:title="@string/settings_section_label">
-
-        <CheckBoxPreference
-            android:defaultValue="@string/settings_section_default"
-            android:key="@string/settings_choose_stage_value"
-            android:capitalize="words"
-            android:selectAllOnFocus="true"
-            android:title="@string/settings_choose_stage_label"
-            android:summary="@string/settings_choose_stage_label"/>
-
-        <CheckBoxPreference
-            android:defaultValue="@string/settings_section_default"
-            android:key="@string/settings_choose_sport_value"
-            android:capitalize="words"
-            android:selectAllOnFocus="true"
-            android:title="@string/settings_choose_sport_label"
-            android:summary="@string/settings_choose_sport_label"/>
-
-        <CheckBoxPreference
-            android:defaultValue="@string/settings_section_default"
-            android:key="@string/settings_choose_art_value"
-            android:capitalize="words"
-            android:selectAllOnFocus="true"
-            android:title="@string/settings_choose_art_label"
-            android:summary="@string/settings_choose_art_label"/>
-
-    </PreferenceCategory>
-
+    <EditTextPreference
+        android:defaultValue="@string/settings_min_number_default"
+        android:inputType="numberDecimal"
+        android:key="@string/settings_min_number_key"
+        android:selectAllOnFocus="true"
+        android:title="@string/settings_min_number_label" />
 
 
 </PreferenceScreen>

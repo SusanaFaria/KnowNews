@@ -1,7 +1,5 @@
 package com.example.android.knownews;
 
-import org.json.JSONObject;
-
 public class News {
 
     private String mThumbnail;
@@ -11,7 +9,7 @@ public class News {
     private String mUrl;
     private String mSection;
 
-    public News(String thumbnail, String newsTitle, String author, String dateNtime, String url, String section, String orderBy) {
+    public News(String thumbnail, String newsTitle, String author, String dateNtime, String url, String section, String orderBy, String pageSize) {
 
         mThumbnail = thumbnail;
         mNewsTitle = newsTitle;

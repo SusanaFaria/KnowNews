@@ -8,9 +8,9 @@ import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.net.Uri;
+import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -30,17 +30,16 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
     private static final int NEWS_LOADER = 1;
     private NewsAdapter mNewsAdapter;
     private TextView mEmptyText;
-    private String sectionPrefs;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_know_news_main);
 
-        PreferenceManager.setDefaultValues(this, R.xml.settings_main, false);
 
-        ListView newsListView = (ListView) findViewById(R.id.list);
-        mEmptyText = (TextView) (findViewById(R.id.empty_list));
+        ListView newsListView = findViewById(R.id.list);
+        mEmptyText = findViewById(R.id.empty_list);
         newsListView.setEmptyView(mEmptyText);
 
         // Create a new adapter that takes an empty list of greenNews as input
@@ -119,7 +118,7 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
             // Restart the loader to requery the USGS as the query settings have been updated
             getLoaderManager().restartLoader(NEWS_LOADER, null, this);
         }
-         if (key.equals(getString(R.string.settings_section_key))){
+        if (key.equals(getString(R.string.settings_min_number_key))) {
             mNewsAdapter.clear();
 
             // Hide the empty state text view as the loading indicator will be displayed
@@ -143,29 +142,14 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        String minNumber = sharedPrefs.getString(
+                getString(R.string.settings_min_number_key),
+                getString(R.string.settings_min_number_default));
 
 
         String orderBy = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default));
-        boolean sectionStage = sharedPrefs.getBoolean(getString(R.string.settings_choose_stage_value), true);
-        boolean sectionSport = sharedPrefs.getBoolean(getString(R.string.settings_choose_sport_value),true);
-        boolean sectionDefault = sharedPrefs.getBoolean(getString(R.string.settings_section_default),true);
-        boolean sectionArt = sharedPrefs.getBoolean(getString(R.string.settings_choose_art_value), true);
-        //queries sections
-        if (sectionDefault) {
-            sectionPrefs = "world";}
-        if(sectionSport) {
-            sectionPrefs = "sport"; }
-         if (sectionStage){
-        sectionPrefs = "stage" ;}
-        if (sectionArt) {
-            sectionPrefs = "artanddesign";
-        }
-
-
-
-
 
 
 
@@ -176,10 +160,10 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
         Uri.Builder uriBuilder = baseUri.buildUpon();
         // Append query parameter and its value. For example, the `format=json`
         uriBuilder.appendQueryParameter("api-key", "490ad52e-b745-4b3e-bfa8-09448aff76c6");
-        uriBuilder.appendQueryParameter("section", sectionPrefs);
         uriBuilder.appendQueryParameter("order-by", orderBy);
         uriBuilder.appendQueryParameter("show-tags", "contributor");
         uriBuilder.appendQueryParameter("show-fields", "thumbnail");
+        uriBuilder.appendQueryParameter("page-size", minNumber);
 
 
         Log.i(LOG_TAG, uriBuilder.toString());
@@ -200,7 +184,7 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
             mNewsAdapter.addAll(news);
         }
 
-        ProgressBar myCircle = (ProgressBar) findViewById(R.id.progress);
+        ProgressBar myCircle = findViewById(R.id.progress);
         myCircle.setVisibility(View.GONE);
 
     }
