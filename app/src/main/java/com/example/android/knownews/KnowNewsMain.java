@@ -35,6 +35,9 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_know_news_main);
+
+        PreferenceManager.setDefaultValues(this, R.xml.settings_main, false);
+
         ListView newsListView = (ListView) findViewById(R.id.list);
         mEmptyText = (TextView) (findViewById(R.id.empty_list));
         newsListView.setEmptyView(mEmptyText);
@@ -51,6 +54,9 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
         // And register to be notified of preference changes
         // So we know when the user has adjusted the query settings
         prefs.registerOnSharedPreferenceChangeListener(this);
+
+
+
 
         // Set an item click listener on the ListView, which sends an intent to a web browser
         // to open a website with more information about the selected news.
@@ -97,8 +103,7 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
     }
     @Override
     public void onSharedPreferenceChanged(SharedPreferences prefs, String key) {
-        if (key.equals(getString(R.string.settings_order_by_key)) ||
-                key.equals(getString(R.string.settings_order_by_key))){
+        if (key.equals(getString(R.string.settings_order_by_key))){
             // Clear the ListView as a new query will be kicked off
             mNewsAdapter.clear();
 
@@ -113,20 +118,44 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
             // Restart the loader to requery the USGS as the query settings have been updated
             getLoaderManager().restartLoader(NEWS_LOADER, null, this);
         }
-    }
+         if (key.equals(getString(R.string.settings_section_key))){
+            mNewsAdapter.clear();
+
+            // Hide the empty state text view as the loading indicator will be displayed
+            mEmptyText.setVisibility(View.GONE);
+
+            // Show the loading indicator while new data is being fetched
+            View loadingIndicator = findViewById(R.id.progress);
+            assert loadingIndicator != null;
+            loadingIndicator.setVisibility(View.VISIBLE);
+
+            // Restart the loader to requery the USGS as the query settings have been updated
+            getLoaderManager().restartLoader(NEWS_LOADER, null, this);
+        }
+
+        }
+
 
 
     @Override
     public Loader<List<News>> onCreateLoader(int i, Bundle bundle) {
 
         SharedPreferences sharedPrefs = PreferenceManager.getDefaultSharedPreferences(this);
-        // getString retrieves a String value from the preferences. The second parameter is the default value for this preference.
-        String section = sharedPrefs.getString(
-                getString(R.string.settings_section_key),
-                getString(R.string.settings_section_default));
+
+
+
         String orderBy = sharedPrefs.getString(
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default));
+        boolean sectionStage = sharedPrefs.getBoolean(getString(R.string.settings_choose_stage_value), true);
+        //queries or not for thumbnails depending on what was selected
+        String sectionPrefs;
+        if (!sectionStage) {
+            sectionPrefs = "world";
+        } else {
+            sectionPrefs = "stage";
+        }
+
 
         // parse breaks apart the URI string that's passed into its parameter
         Uri baseUri = Uri.parse(GUARDIAN_REQUEST);
@@ -135,10 +164,11 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
         Uri.Builder uriBuilder = baseUri.buildUpon();
         // Append query parameter and its value. For example, the `format=json`
         uriBuilder.appendQueryParameter("api-key", "490ad52e-b745-4b3e-bfa8-09448aff76c6");
-        uriBuilder.appendQueryParameter("sectionName", section);
-        uriBuilder.appendQueryParameter("orderBy", orderBy);
+        uriBuilder.appendQueryParameter("section", sectionPrefs);
+        uriBuilder.appendQueryParameter("order-by", orderBy);
         uriBuilder.appendQueryParameter("show-tags", "contributor");
         uriBuilder.appendQueryParameter("show-fields", "thumbnail");
+
 
         Log.i(LOG_TAG, uriBuilder.toString());
         // Return the completed uri `https://earthquake.usgs.gov/fdsnws/event/1/query?format=geojson&limit=10&minmag=minMagnitude&orderby=time
@@ -162,7 +192,6 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
         myCircle.setVisibility(View.GONE);
 
     }
-
 
     @Override
     public void onLoaderReset(Loader<List<News>> loader) {
@@ -188,6 +217,13 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+    @Override
+    protected void onDestroy () {
+        super.onDestroy();
+        // get shared preferences and unregister shared preferences change listener
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        sharedPreferences.unregisterOnSharedPreferenceChangeListener(this);
     }
 }
 

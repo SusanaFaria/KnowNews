@@ -7,12 +7,28 @@
         android:entryValues="@array/settings_order_by_values"
         android:key="@string/settings_order_by_key"
         android:title="@string/settings_order_by_label" />
-    <EditTextPreference
-        android:defaultValue="@string/settings_section_default"
-        android:inputType="textAutoComplete"
-        android:key="@string/settings_section_key"
-        android:capitalize="words"
-        android:selectAllOnFocus="true"
-        android:title="@string/settings_title" />
+
+    <PreferenceCategory
+        android:title="@string/settings_section_label">
+
+        <CheckBoxPreference
+            android:defaultValue="@string/settings_section_default"
+            android:key="@string/settings_choose_stage_value"
+            android:capitalize="words"
+            android:selectAllOnFocus="true"
+            android:title="@string/settings_section_label"
+            android:summary="@string/settings_choose_stage_label"/>
+
+        <CheckBoxPreference
+            android:defaultValue="@string/settings_section_default"
+            android:key="@string/settings_choose_sport_value"
+            android:capitalize="words"
+            android:selectAllOnFocus="true"
+            android:title="@string/settings_section_label"
+            android:summary="@string/settings_choose_sport_label"/>
+
+    </PreferenceCategory>
+
+
 
 </PreferenceScreen>

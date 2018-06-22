@@ -122,6 +122,11 @@ public class QueryUtils {
 
             // Extract the JSONObject associated with the key called "response"
             JSONObject newsObject = baseJsonResponse.getJSONObject("response");
+            String orderBy = newsObject.getString("orderBy");
+
+
+
+
 
 
             // For a given news, extract the JSONArray associated with the
@@ -135,22 +140,29 @@ public class QueryUtils {
                 // Get a single earthquake at position i within the list of earthquakes
                 JSONObject currentNews = resultsArray.getJSONObject(i);
 
-                String webTitle = currentNews.getString("webTitle");
-                String webDate = currentNews.getString("webPublicationDate");
-                String webUrl = currentNews.getString("webUrl");
-                String section = currentNews.getString("sectionName");
-                JSONObject fields = currentNews.getJSONObject("fields");
-                String thumbnailImg = fields.getString("thumbnail");
+                String webTitle = currentNews.optString("webTitle");
+                String webDate = currentNews.optString("webPublicationDate");
+                String webUrl = currentNews.optString("webUrl");
+                String section = currentNews.optString("sectionName");
+                String thumbnailImg;
+                try {JSONObject fields = currentNews.getJSONObject("fields");
+                    thumbnailImg = fields.optString("thumbnail");}
+                catch (Exception e){Log.d("QueryUtils","No value for thumbnail");
+                    thumbnailImg = "no image provided";}
 
                 JSONArray tagsArray = currentNews.getJSONArray("tags");
 
                 for (int a = 0; a < tagsArray.length(); a++) {
-                    JSONObject tags = tagsArray.getJSONObject(a);
-                    String author = tags.getString("webTitle");
+
+                    String author;
+                    try {JSONObject tags = tagsArray.getJSONObject(a);
+                         author =tags.optString("webTitle");}
+                         catch (Exception e){Log.d("QueryUtils","No value for author");
+                             author = "unknown";}
 
 
                     // Create a new {@link GreenNews} object with the thumbnail, title, date, url and section from the JSON response.
-                    News singleNew = new News(thumbnailImg, webTitle, author, webDate, webUrl, section);
+                    News singleNew = new News(thumbnailImg, webTitle, author, webDate, webUrl, section, orderBy);
 
                     // Add the new {@link GreenNews} to the list of greenNews.
                     news.add(singleNew);

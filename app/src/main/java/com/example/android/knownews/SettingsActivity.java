@@ -1,12 +1,15 @@
 package com.example.android.knownews;
 
 import android.content.SharedPreferences;
+import android.os.Build;
 import android.os.Bundle;
+import android.preference.CheckBoxPreference;
 import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 
 
 public class SettingsActivity extends AppCompatActivity {
@@ -23,14 +26,34 @@ public class SettingsActivity extends AppCompatActivity {
         public void onCreate(Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.settings_main);
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                PreferenceManager.setDefaultValues(getContext(), R.xml.settings_main, false);
+            }
 
-            Preference section = findPreference(getString(R.string.settings_section_key));
-            bindPreferenceSummaryToValue(section);
+            final CheckBoxPreference section = (CheckBoxPreference)findPreference(getString(R.string.settings_choose_stage_value));
+            final CheckBoxPreference sport = (CheckBoxPreference) findPreference("sport");
+
 
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
 
-        }
+            section.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                    return true;
+                }
+            });
+            sport.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
+                @Override
+                public boolean onPreferenceChange(Preference preference, Object newValue) {
+                    return true;
+                }
+            });
+
+            }
+
+
 
         @Override
         public boolean onPreferenceChange(Preference preference, Object value) {
@@ -47,6 +70,8 @@ public class SettingsActivity extends AppCompatActivity {
             } else {
                 preference.setSummary(stringValue);
             }
+
+
             return true;
         }
         private void bindPreferenceSummaryToValue(Preference preference) {
