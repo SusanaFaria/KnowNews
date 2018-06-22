@@ -16,7 +16,7 @@
             android:key="@string/settings_choose_stage_value"
             android:capitalize="words"
             android:selectAllOnFocus="true"
-            android:title="@string/settings_section_label"
+            android:title="@string/settings_choose_stage_label"
             android:summary="@string/settings_choose_stage_label"/>
 
         <CheckBoxPreference
@@ -24,8 +24,16 @@
             android:key="@string/settings_choose_sport_value"
             android:capitalize="words"
             android:selectAllOnFocus="true"
-            android:title="@string/settings_section_label"
+            android:title="@string/settings_choose_sport_label"
             android:summary="@string/settings_choose_sport_label"/>
+
+        <CheckBoxPreference
+            android:defaultValue="@string/settings_section_default"
+            android:key="@string/settings_choose_art_value"
+            android:capitalize="words"
+            android:selectAllOnFocus="true"
+            android:title="@string/settings_choose_art_label"
+            android:summary="@string/settings_choose_art_label"/>
 
     </PreferenceCategory>
 

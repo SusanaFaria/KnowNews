@@ -18,6 +18,17 @@
     <string name="settings_choose_sport_label">Sport</string>
     <string name="settings_choose_sport_value">sport</string>
 
+    <string name="settings_choose_art_label">Art and Design</string>
+    <string name="settings_choose_art_value">artanddesign</string>
+
+    <string name="settings_choose_music">music</string>
+    <string name="settings_choose_books">books</string>
+    <string name="settings_choose_culture">culture</string>
+    <string name="settings_choose_education">education</string>
+    <string name="settings_choose_environment">environment</string>
+    <string name="settings_choose_film">film</string>
+
+
 
     <!-- Strings For Order-By Preference [CHAR LIMIT=30] -->
     <string name="settings_order_by_label">Order By</string>

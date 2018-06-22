@@ -30,6 +30,7 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
     private static final int NEWS_LOADER = 1;
     private NewsAdapter mNewsAdapter;
     private TextView mEmptyText;
+    private String sectionPrefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -148,13 +149,24 @@ public class KnowNewsMain extends AppCompatActivity implements LoaderManager.Loa
                 getString(R.string.settings_order_by_key),
                 getString(R.string.settings_order_by_default));
         boolean sectionStage = sharedPrefs.getBoolean(getString(R.string.settings_choose_stage_value), true);
-        //queries or not for thumbnails depending on what was selected
-        String sectionPrefs;
-        if (!sectionStage) {
-            sectionPrefs = "world";
-        } else {
-            sectionPrefs = "stage";
+        boolean sectionSport = sharedPrefs.getBoolean(getString(R.string.settings_choose_sport_value),true);
+        boolean sectionDefault = sharedPrefs.getBoolean(getString(R.string.settings_section_default),true);
+        boolean sectionArt = sharedPrefs.getBoolean(getString(R.string.settings_choose_art_value), true);
+        //queries sections
+        if (sectionDefault) {
+            sectionPrefs = "world";}
+        if(sectionSport) {
+            sectionPrefs = "sport"; }
+         if (sectionStage){
+        sectionPrefs = "stage" ;}
+        if (sectionArt) {
+            sectionPrefs = "artanddesign";
         }
+
+
+
+
+
 
 
         // parse breaks apart the URI string that's passed into its parameter

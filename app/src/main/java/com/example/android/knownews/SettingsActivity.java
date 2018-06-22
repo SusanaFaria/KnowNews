@@ -31,27 +31,23 @@ public class SettingsActivity extends AppCompatActivity {
             }
 
             final CheckBoxPreference section = (CheckBoxPreference)findPreference(getString(R.string.settings_choose_stage_value));
-            final CheckBoxPreference sport = (CheckBoxPreference) findPreference("sport");
+            final CheckBoxPreference sport = (CheckBoxPreference) findPreference(getString(R.string.settings_choose_sport_value));
+            final CheckBoxPreference art = (CheckBoxPreference) findPreference(getString(R.string.settings_choose_art_value));
 
 
             Preference orderBy = findPreference(getString(R.string.settings_order_by_key));
             bindPreferenceSummaryToValue(orderBy);
 
-            section.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
+            section.getOnPreferenceChangeListener();
+            section.setSummary(R.string.settings_choose_stage_label);
+            sport.getOnPreferenceChangeListener();
+            sport.setSummary(R.string.settings_choose_sport_label);
+            art.getOnPreferenceChangeListener();
+            art.setSummary(R.string.settings_choose_art_label);
 
-                    return true;
-                }
-            });
-            sport.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
-                @Override
-                public boolean onPreferenceChange(Preference preference, Object newValue) {
-                    return true;
-                }
-            });
 
-            }
+
+        }
 
 
 
